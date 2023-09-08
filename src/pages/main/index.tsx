@@ -11,6 +11,9 @@ export const MainPage: React.FC = () => {
         <S.MainPageLogo src={Logo} alt="logo" />
         <S.MainPageText>한움페이 부스운영 시스템</S.MainPageText>
       </S.MainPageLogoContainer>
+      <S.MainPageButtonWrapper>
+        <S.MainPageButton>로그인</S.MainPageButton>
+      </S.MainPageButtonWrapper>
     </S.MainPageContainer>
   );
 };

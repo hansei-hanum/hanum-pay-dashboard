@@ -1,8 +1,14 @@
 {
   "name": "hanum-pay",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
+  "repository": "https://github.com/hansei-hanum/hanum-pay-dashboard.git",
+  "author": {
+    "name": "GeunWon Choi",
+    "email": "kidjustinchoi@gmail.com",
+    "url": "https://github.com/choi138"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
