@@ -30,6 +30,7 @@ export const globalStyle = css`
   #app,
   #root,
   #__next {
+    max-width: 530px;
     font-size: 14px;
     font-weight: 400;
     font-family:
