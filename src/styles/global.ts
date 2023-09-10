@@ -23,6 +23,9 @@ export const globalStyle = css`
   #__next {
     width: 100%;
     height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     color: ${colors.black};
     background-color: ${colors.background};
   }
@@ -30,7 +33,6 @@ export const globalStyle = css`
   #app,
   #root,
   #__next {
-    max-width: 530px;
     font-size: 14px;
     font-weight: 400;
     font-family:

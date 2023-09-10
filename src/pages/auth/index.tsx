@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
 
 import { Logo } from '@/assets';
+import { Button, Text } from '@/components';
+import { colors } from '@/styles';
 
 import * as S from './styled';
 
 export const AuthPage: React.FC = () => {
   const [isClicked, setIsClicked] = useState(false);
   const { register, handleSubmit } = useForm<{ key: string }>();
-  const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<{ key: string }> = ({ key }) => {
     console.log(key);
     localStorage.setItem('key', key);
-    navigate('/');
+    window.location.reload();
   };
 
   return (
@@ -22,10 +22,16 @@ export const AuthPage: React.FC = () => {
       <S.AuthPageMainSection>
         <S.AuthPageLogoContainer>
           <S.AuthPageLogo src={Logo} alt="logo" />
-          <S.AuthPageText>한움페이 부스운영 시스템</S.AuthPageText>
+          <Text size={14} weight={600}>
+            한움페이 부스운영 시스템
+          </Text>
         </S.AuthPageLogoContainer>
         <S.AuthPageInputContainer>
-          {isClicked && <S.AuthPageInputLabel>부스 키</S.AuthPageInputLabel>}
+          {isClicked && (
+            <Text size={12} color={colors.placeholder}>
+              부스 키
+            </Text>
+          )}
           <S.AuthPageInput
             {...register('key')}
             onClick={() => setIsClicked(true)}
@@ -33,7 +39,7 @@ export const AuthPage: React.FC = () => {
           />
         </S.AuthPageInputContainer>
       </S.AuthPageMainSection>
-      <S.AuthPageButton onClick={handleSubmit(onSubmit)}>로그인</S.AuthPageButton>
+      <Button onClick={handleSubmit(onSubmit)}>로그인</Button>
     </S.AuthPageContainer>
   );
 };

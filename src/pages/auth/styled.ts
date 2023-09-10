@@ -5,6 +5,7 @@ import { colors } from '@/styles';
 export const AuthPageContainer = styled.div`
   width: 100%;
   height: 100%;
+  max-width: 530px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -60,18 +61,4 @@ export const AuthPageInput = styled.input`
   border-radius: 0;
   border: none;
   border-bottom: 1px solid ${colors.placeholder};
-`;
-
-export const AuthPageButton = styled.div`
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 44px;
-  width: 100%;
-  background: ${colors.primary};
-  border-radius: 10px;
-  color: ${colors.white};
-  font-size: 15px;
-  font-weight: 700;
 `;

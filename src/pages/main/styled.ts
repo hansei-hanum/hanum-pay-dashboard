@@ -1,8 +1,11 @@
 import styled from '@emotion/styled';
 
+import { colors } from '@/styles';
+
 export const MainPageContainer = styled.div`
   width: 100%;
   height: 100%;
+  max-width: 530px;
   display: flex;
   flex-direction: column;
   row-gap: 20px;
@@ -23,8 +26,33 @@ export const MainPageLogo = styled.img`
 
 export const MainPageHeaderText = styled.p`
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
   display: flex;
   align-items: center;
   column-gap: 10px;
+`;
+
+export const MainPageTopSection = styled.div`
+  margin-top: 40px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const MainPageHistory = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+`;
+
+export const MainPageHistoryLine = styled.div`
+  width: 100%;
+  border-bottom: 0.1px solid ${colors.placeholder};
+`;
+
+export const MainPageHistoryContainer = styled.div`
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 0.8fr;
+  padding: 16px 0;
 `;
