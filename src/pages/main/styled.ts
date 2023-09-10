@@ -48,11 +48,17 @@ export const MainPageHistory = styled.div`
 export const MainPageHistoryLine = styled.div`
   width: 100%;
   border-bottom: 0.1px solid ${colors.placeholder};
+  margin: 16px 0;
 `;
 
 export const MainPageHistoryContainer = styled.div`
   width: 100%;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 0.8fr;
-  padding: 16px 0;
+  grid-template-columns: 1fr 1fr 1fr 0.6fr;
+  margin-top: 14px;
+`;
+
+export const MainPageHistoryContent = styled(MainPageHistoryContainer)`
+  padding: 12px 0;
+  margin: 0;
 `;

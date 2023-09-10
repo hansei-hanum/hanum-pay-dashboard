@@ -12,11 +12,13 @@ export interface TextProps {
   size: number;
   color?: string;
   weight?: number;
+  onClick?: () => void;
 }
 
-export const Text: React.FC<TextProps> = ({ children, size, color, weight }) => {
+export const Text: React.FC<TextProps> = ({ children, size, color, weight, onClick }) => {
   return (
     <S.TextElement
+      onClick={onClick}
       css={css`
         font-size: ${size}px;
         color: ${color ? color : colors.black};
