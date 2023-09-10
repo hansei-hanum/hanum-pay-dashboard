@@ -15,3 +15,11 @@ export const ButtonElement = styled.div`
   font-size: 15px;
   font-weight: 700;
 `;
+
+export const ButtonContainer = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  column-gap: 10px;
+`;

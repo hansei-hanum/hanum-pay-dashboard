@@ -23,6 +23,7 @@ export const Text: React.FC<TextProps> = ({ children, size, color, weight, onCli
         font-size: ${size}px;
         color: ${color ? color : colors.black};
         font-weight: ${weight ? weight : 500};
+        line-height: 1.2;
       `}
     >
       {children}

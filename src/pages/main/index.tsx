@@ -5,10 +5,12 @@ import { Logo } from '@/assets';
 import { Text } from '@/components';
 import { PAY_HISTORY_HEADER_LIST, PAY_HISTORY_LIST } from '@/constant';
 import { colors } from '@/styles';
+import { useModal } from '@/hooks';
 
 import * as S from './styled';
 
 export const MainPage: React.FC = () => {
+  const { open } = useModal();
   const fontSize = 15;
   const fontWeight = 400;
 
@@ -64,7 +66,7 @@ export const MainPage: React.FC = () => {
               <Text size={fontSize} weight={fontWeight}>
                 {formatTime(new Date(), hour, minute)}
               </Text>
-              <Text size={fontSize} color={colors.danger} weight={fontWeight}>
+              <Text size={fontSize} color={colors.danger} weight={fontWeight} onClick={open}>
                 {refund ? '환불됨' : '환불하기'}
               </Text>
             </S.MainPageHistoryContent>
