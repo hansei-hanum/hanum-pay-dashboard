@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { MdLogout, MdRefresh } from 'react-icons/md';
 
+import { useRecoilState } from 'recoil';
+
 import { Logo } from '@/assets';
 import { Button, Modal, Text } from '@/components';
 import { PAY_HISTORY_HEADER_LIST } from '@/constant';
 import { colors } from '@/styles';
 import { useGetPaymentDetail, useRefundPayment } from '@/hooks';
+import { refundAtom } from '@/atom';
+import { formattedMoney } from '@/utils';
 
 import * as S from './styled';
 
@@ -23,7 +27,8 @@ export const MainPage: React.FC = () => {
   const boothData = boothPayment.data && boothPayment.data?.data;
   const boothLoading = boothPayment.isLoading;
 
-  const { mutate } = useRefundPayment(page);
+  const { mutate } = useRefundPayment({ page: page, userName: modal.name });
+  const [refund, setRefund] = useRecoilState(refundAtom);
 
   const fontSize = 15;
   const fontWeight = 400;
@@ -36,11 +41,6 @@ export const MainPage: React.FC = () => {
     return `${diffHour} ${diff % 60}분 전`;
   };
 
-  const formatAmount = (amount: number) => {
-    if (amount < 999) return amount.toString();
-    return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-  };
-
   const formatUserName = (name: string) => {
     const nameLength = name.length;
     const formateName = name.replace(name.slice(nameLength - 2), '*') + name.slice(-1);
@@ -51,14 +51,6 @@ export const MainPage: React.FC = () => {
     localStorage.removeItem('key');
     window.location.reload();
   };
-
-  useEffect(() => {
-    // if (!boothLoading && !boothData) {
-    //   localStorage.removeItem('key');
-    //   window.location.reload();
-    //   alert('부스 키가 올바르지 않습니다.');
-    // }
-  }, [boothLoading, boothData]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -84,7 +76,7 @@ export const MainPage: React.FC = () => {
                   <br />
                 </Text>
                 <Text size={22} weight={700}>
-                  {boothData && formatAmount(boothData.balanceAmount)}원
+                  {boothData && formattedMoney(boothData.balanceAmount)}원
                 </Text>
               </div>
               <S.MainPageHistoryHeader>
@@ -111,8 +103,8 @@ export const MainPage: React.FC = () => {
                   const minute = historyTime.getMinutes();
 
                   const moneyFormat = isPaid
-                    ? formatAmount(paidAmount)
-                    : formatAmount(refundedAmount);
+                    ? formattedMoney(paidAmount)
+                    : formattedMoney(refundedAmount);
 
                   return (
                     <>
@@ -204,41 +196,63 @@ export const MainPage: React.FC = () => {
           </Text>
         </div>
       )}
-      {modal.state && (
+      {modal.state || refund.modalOpen ? (
         <Modal
-          title="환불 확인"
+          title={
+            refund.modalOpen
+              ? refund.status === 'SUCCESS'
+                ? '환불 성공'
+                : '환불 실패'
+              : '환불 확인'
+          }
           body={
             <S.MainPageTextContainer>
-              {modal.name}님에게 {modal.money}원을 환불해요.
-              <br />
-              환불을 진행하면 부스 수익금이 감소하며 즉시 {modal.name}님의 한움페이 잔액에 환불금이
-              입금돼요.
-              <br />
-              계속할까요?
+              {refund.modalOpen ? (
+                <>{refund.message}</>
+              ) : (
+                <>
+                  {modal.name}님에게 {modal.money}원을 환불해요.
+                  <br />
+                  환불을 진행하면 부스 수익금이 감소하며 즉시 {modal.name}님의 한움페이 잔액에
+                  환불금이 입금돼요.
+                  <br />
+                  계속할까요?
+                </>
+              )}
             </S.MainPageTextContainer>
           }
           footer={
-            <Button.Container>
+            refund.modalOpen ? (
               <Button
                 onClick={() => {
-                  setModal((prev) => ({ ...prev, state: false }));
-                }}
-                isSecondary
-              >
-                취소
-              </Button>
-              <Button
-                onClick={() => {
-                  mutate({ id: modal.id });
-                  setModal((prev) => ({ ...prev, state: false }));
+                  setRefund({ ...refund, modalOpen: false }),
+                    setModal((prev) => ({ ...prev, state: false }));
                 }}
               >
                 확인
               </Button>
-            </Button.Container>
+            ) : (
+              <Button.Container>
+                <Button
+                  onClick={() => {
+                    setModal((prev) => ({ ...prev, state: false }));
+                  }}
+                  isSecondary
+                >
+                  취소
+                </Button>
+                <Button
+                  onClick={() => {
+                    mutate({ id: modal.id });
+                  }}
+                >
+                  확인
+                </Button>
+              </Button.Container>
+            )
           }
         />
-      )}
+      ) : null}
     </S.MainPageContainer>
   );
 };
