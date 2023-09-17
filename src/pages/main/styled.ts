@@ -84,3 +84,7 @@ export const MainPageFooter = styled.div`
   column-gap: 4px;
   padding-bottom: 20px;
 `;
+
+export const MainPageTextContainer = styled.div`
+  line-height: 1.4;
+`;

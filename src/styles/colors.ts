@@ -2,6 +2,7 @@ export const colors = {
   white: '#FFFFFF',
   black: '#000000',
   primary: 'linear-gradient(145deg, #4585FE 1.61%, #4785FA 49.15%, #6497FA 97.69%)',
+  blue: '#4785FA',
   secondary: '#EFEFEF',
   placeholder: '#A3A3A3',
   danger: '#E12525',

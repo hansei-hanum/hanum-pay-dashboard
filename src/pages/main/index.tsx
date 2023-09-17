@@ -5,7 +5,7 @@ import { Logo } from '@/assets';
 import { Button, Modal, Text } from '@/components';
 import { PAY_HISTORY_HEADER_LIST } from '@/constant';
 import { colors } from '@/styles';
-import { useGetPaymentDetail } from '@/hooks';
+import { useGetPaymentDetail, useRefundPayment } from '@/hooks';
 
 import * as S from './styled';
 
@@ -18,9 +18,12 @@ export const MainPage: React.FC = () => {
     money: '',
     name: '',
   });
+
   const boothPayment = useGetPaymentDetail({ page: page, limit: 17 });
   const boothData = boothPayment.data && boothPayment.data?.data;
   const boothLoading = boothPayment.isLoading;
+
+  const { mutate } = useRefundPayment(page);
 
   const fontSize = 15;
   const fontWeight = 400;
@@ -50,11 +53,11 @@ export const MainPage: React.FC = () => {
   };
 
   useEffect(() => {
-    if (!boothLoading && !boothData) {
-      localStorage.removeItem('key');
-      window.location.reload();
-      alert('부스 키가 올바르지 않습니다.');
-    }
+    // if (!boothLoading && !boothData) {
+    //   localStorage.removeItem('key');
+    //   window.location.reload();
+    //   alert('부스 키가 올바르지 않습니다.');
+    // }
   }, [boothLoading, boothData]);
 
   useEffect(() => {
@@ -70,7 +73,7 @@ export const MainPage: React.FC = () => {
             <S.MainPageHeader>
               <S.MainPageLogo src={Logo} />
               <S.MainPageHeaderText>
-                클라우드보안과 2학년 2반
+                {boothData.boothInfo.classification}
                 <MdLogout size={20} onClick={onLogout} />
               </S.MainPageHeaderText>
             </S.MainPageHeader>
@@ -125,7 +128,7 @@ export const MainPage: React.FC = () => {
                         </Text>
                         <Text
                           size={fontSize}
-                          color={colors.danger}
+                          color={isPaid ? colors.danger : colors.blue}
                           weight={fontWeight}
                           onClick={() =>
                             setModal({
@@ -172,6 +175,25 @@ export const MainPage: React.FC = () => {
             </Text>
           </S.MainPageFooter>
         </>
+      ) : !boothLoading && !boothData ? (
+        <>
+          <S.MainPageHeader>
+            <S.MainPageLogo src={Logo} />
+          </S.MainPageHeader>
+          <Modal
+            title="로그인 실패"
+            body={
+              <S.MainPageTextContainer>
+                부스키가 잘못되었습니다
+                <br />
+                올바른 부스키를 다시 입력해주세요
+                <br />
+                만약 올바르게 입력했는데도 이 메시지가 표시된다면, 한움페이 부스에 방문해주세요.
+              </S.MainPageTextContainer>
+            }
+            footer={<Button onClick={onLogout}>확인</Button>}
+          />
+        </>
       ) : (
         <div>
           <S.MainPageHeader>
@@ -186,14 +208,14 @@ export const MainPage: React.FC = () => {
         <Modal
           title="환불 확인"
           body={
-            <>
+            <S.MainPageTextContainer>
               {modal.name}님에게 {modal.money}원을 환불해요.
               <br />
               환불을 진행하면 부스 수익금이 감소하며 즉시 {modal.name}님의 한움페이 잔액에 환불금이
               입금돼요.
               <br />
               계속할까요?
-            </>
+            </S.MainPageTextContainer>
           }
           footer={
             <Button.Container>
@@ -207,6 +229,7 @@ export const MainPage: React.FC = () => {
               </Button>
               <Button
                 onClick={() => {
+                  mutate({ id: modal.id });
                   setModal((prev) => ({ ...prev, state: false }));
                 }}
               >

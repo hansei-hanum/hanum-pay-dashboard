@@ -3,6 +3,7 @@ import axios from 'axios';
 export const API_SUFFIX = {
   BASE_URL: 'https://pay.hanum.us',
   BOOTH_PAYMENT_DETAIL: '/eoullim/booth/payment/detail',
+  BOOTH_PAYMENT_REFUND: '/eoullim/booth/payment/refund',
 };
 
 export const instance = axios.create({
