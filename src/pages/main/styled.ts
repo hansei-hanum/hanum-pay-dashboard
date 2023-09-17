@@ -36,6 +36,13 @@ export const MainPageTopSection = styled.div`
   margin-top: 40px;
   width: 100%;
   display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+`;
+
+export const MainPageHistoryHeader = styled.div`
+  width: 100%;
+  display: flex;
   justify-content: space-between;
 `;
 

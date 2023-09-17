@@ -8,7 +8,6 @@ import { Global } from '@emotion/react';
 
 import { App } from './App';
 import { globalStyle } from './styles';
-import { Modal } from './components/';
 
 const client = new QueryClient();
 
@@ -17,7 +16,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <RecoilRoot>
       <BrowserRouter>
         <QueryClientProvider client={client}>
-          <Modal.Container />
           <Global styles={[globalStyle]} />
           <App />
         </QueryClientProvider>
