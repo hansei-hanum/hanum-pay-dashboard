@@ -7,9 +7,14 @@ export const MainPageContainer = styled.div`
   height: 100%;
   max-width: 530px;
   display: flex;
+  justify-content: space-between;
   flex-direction: column;
   row-gap: 20px;
   padding: 10px 20px;
+  padding-bottom: 0;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 export const MainPageHeader = styled.div`
@@ -34,10 +39,11 @@ export const MainPageHeaderText = styled.p`
 
 export const MainPageTopSection = styled.div`
   margin-top: 40px;
+  margin-bottom: 20px;
   width: 100%;
   display: flex;
   flex-direction: column;
-  row-gap: 20px;
+  row-gap: 30px;
 `;
 
 export const MainPageHistoryHeader = styled.div`
@@ -68,4 +74,13 @@ export const MainPageHistoryContainer = styled.div`
 export const MainPageHistoryContent = styled(MainPageHistoryContainer)`
   padding: 12px 0;
   margin: 0;
+`;
+
+export const MainPageFooter = styled.div`
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  display: flex;
+  column-gap: 4px;
+  padding-bottom: 20px;
 `;

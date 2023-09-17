@@ -9,6 +9,7 @@ export interface GetPaymentDetailResponse {
   balanceAmount: number;
   payments: [
     {
+      userName: string;
       id: number;
       paidAmount: number | null;
       refundedAmount: number | null;
