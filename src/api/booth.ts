@@ -11,8 +11,8 @@ export interface GetPaymentDetailResponse {
     {
       userName: string;
       id: number;
-      paidAmount: number | null;
-      refundedAmount: number | null;
+      paidAmount: number;
+      refundedAmount: number;
       status: 'paid' | 'refunded';
       paidTime: string;
       refundedTime: string;

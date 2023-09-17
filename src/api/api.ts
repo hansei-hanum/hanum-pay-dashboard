@@ -23,7 +23,6 @@ export interface APIErrorResponse {
 }
 
 export const setAccessToken = (token: string | null) => {
-  console.log('setAccessToken', token);
   if (token) {
     instance.defaults.headers.common.Authorization = `Bearer ${token}`;
   } else {

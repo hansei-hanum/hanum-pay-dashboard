@@ -5,19 +5,22 @@ import { Logo } from '@/assets';
 import { Button, Modal, Text } from '@/components';
 import { PAY_HISTORY_HEADER_LIST } from '@/constant';
 import { colors } from '@/styles';
-import { useGetPaymentDetail } from '@/hooks/query/useGetPaymentDetail';
+import { useGetPaymentDetail } from '@/hooks';
 
 import * as S from './styled';
 
 export const MainPage: React.FC = () => {
   const [page, setPage] = useState(1);
 
-  const [modal, setModal] = useState(false);
+  const [modal, setModal] = useState({
+    state: false,
+    id: 0,
+    money: '',
+    name: '',
+  });
   const boothPayment = useGetPaymentDetail({ page: page, limit: 17 });
   const boothData = boothPayment.data && boothPayment.data?.data;
   const boothLoading = boothPayment.isLoading;
-
-  console.log('data', boothPayment.data);
 
   const fontSize = 15;
   const fontWeight = 400;
@@ -31,8 +34,14 @@ export const MainPage: React.FC = () => {
   };
 
   const formatAmount = (amount: number) => {
-    if (amount < 999) return amount;
+    if (amount < 999) return amount.toString();
     return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  };
+
+  const formatUserName = (name: string) => {
+    const nameLength = name.length;
+    const formateName = name.replace(name.slice(nameLength - 2), '*') + name.slice(-1);
+    return formateName;
   };
 
   const onLogout = () => {
@@ -97,6 +106,11 @@ export const MainPage: React.FC = () => {
                   const historyTime = new Date(isPaid ? paidTime : refundedTime);
                   const hour = historyTime.getHours();
                   const minute = historyTime.getMinutes();
+
+                  const moneyFormat = isPaid
+                    ? formatAmount(paidAmount)
+                    : formatAmount(refundedAmount);
+
                   return (
                     <>
                       <S.MainPageHistoryContent key={id}>
@@ -104,10 +118,7 @@ export const MainPage: React.FC = () => {
                           {userName}
                         </Text>
                         <Text size={fontSize} weight={fontWeight}>
-                          {isPaid
-                            ? paidAmount && formatAmount(paidAmount)
-                            : refundedAmount && formatAmount(refundedAmount)}
-                          원
+                          {moneyFormat}원
                         </Text>
                         <Text size={fontSize} weight={fontWeight}>
                           {formatTime(new Date(), hour, minute)}
@@ -116,7 +127,14 @@ export const MainPage: React.FC = () => {
                           size={fontSize}
                           color={colors.danger}
                           weight={fontWeight}
-                          onClick={() => setModal(true)}
+                          onClick={() =>
+                            setModal({
+                              state: true,
+                              id: id,
+                              name: formatUserName(userName),
+                              money: moneyFormat,
+                            })
+                          }
                         >
                           {isPaid ? '환불하기' : '환불됨'}
                         </Text>
@@ -124,29 +142,6 @@ export const MainPage: React.FC = () => {
                     </>
                   );
                 },
-              )}
-              {modal && (
-                <Modal
-                  title="환불확인"
-                  body={
-                    <>
-                      박*영님에게 10,000원을 환불해요.
-                      <br />
-                      환불을 진행하면 부스 수익금이 감소하며 즉시 박*영님의 한움페이 잔액에 환불금이
-                      입금돼요.
-                      <br />
-                      계속할까요?
-                    </>
-                  }
-                  footer={
-                    <Button.Container>
-                      <Button onClick={() => setModal(false)} isSecondary>
-                        취소
-                      </Button>
-                      <Button onClick={() => setModal(false)}>확인</Button>
-                    </Button.Container>
-                  }
-                />
               )}
             </S.MainPageHistory>
           </div>
@@ -157,6 +152,7 @@ export const MainPage: React.FC = () => {
                 if (page === 1) return;
                 setPage(page - 1);
               }}
+              color={page === 1 ? colors.placeholder : colors.black}
             >
               &larr;
             </Text>
@@ -167,10 +163,10 @@ export const MainPage: React.FC = () => {
             <Text
               size={15}
               onClick={() => {
-                console.log('page', page);
                 if (page === boothData?.totalPage) return;
                 setPage(page + 1);
               }}
+              color={page === boothData?.totalPage ? colors.placeholder : colors.black}
             >
               &rarr;
             </Text>
@@ -185,6 +181,40 @@ export const MainPage: React.FC = () => {
             Loading...
           </Text>
         </div>
+      )}
+      {modal.state && (
+        <Modal
+          title="환불 확인"
+          body={
+            <>
+              {modal.name}님에게 {modal.money}원을 환불해요.
+              <br />
+              환불을 진행하면 부스 수익금이 감소하며 즉시 {modal.name}님의 한움페이 잔액에 환불금이
+              입금돼요.
+              <br />
+              계속할까요?
+            </>
+          }
+          footer={
+            <Button.Container>
+              <Button
+                onClick={() => {
+                  setModal((prev) => ({ ...prev, state: false }));
+                }}
+                isSecondary
+              >
+                취소
+              </Button>
+              <Button
+                onClick={() => {
+                  setModal((prev) => ({ ...prev, state: false }));
+                }}
+              >
+                확인
+              </Button>
+            </Button.Container>
+          }
+        />
       )}
     </S.MainPageContainer>
   );
