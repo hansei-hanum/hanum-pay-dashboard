@@ -1,15 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
 import { Logo } from '@/assets';
 import { Button, Text } from '@/components';
-import { colors } from '@/styles';
 
 import * as S from './styled';
 
 export const AuthPage: React.FC = () => {
-  const [isClicked, setIsClicked] = useState(false);
-  const { register, handleSubmit } = useForm<{ key: string }>();
+  const { register, handleSubmit, setFocus } = useForm<{ key: string }>();
+  console.log(setFocus, 'werq');
 
   const onSubmit: SubmitHandler<{ key: string }> = ({ key }) => {
     console.log(key);
@@ -26,18 +25,10 @@ export const AuthPage: React.FC = () => {
             한움페이 부스운영 시스템
           </Text>
         </S.AuthPageLogoContainer>
-        <S.AuthPageInputContainer>
-          {isClicked && (
-            <Text size={12} color={colors.placeholder}>
-              부스 키
-            </Text>
-          )}
-          <S.AuthPageInput
-            {...register('key')}
-            onClick={() => setIsClicked(true)}
-            placeholder={!isClicked ? '부스 키를 입력해주세요' : ''}
-          />
-        </S.AuthPageInputContainer>
+        <S.AuthPageFormGroup>
+          <S.AuthPageFormInput placeholder="부스 키를 입력해주세요" {...register('key')} />
+          <S.AuthPageFormLabel>부스 키</S.AuthPageFormLabel>
+        </S.AuthPageFormGroup>
       </S.AuthPageMainSection>
       <Button onClick={handleSubmit(onSubmit)}>로그인</Button>
     </S.AuthPageContainer>
