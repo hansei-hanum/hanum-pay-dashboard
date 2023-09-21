@@ -122,14 +122,15 @@ export const MainPage: React.FC = () => {
                           size={fontSize}
                           color={isPaid ? colors.danger : colors.blue}
                           weight={fontWeight}
-                          onClick={() =>
+                          onClick={() => {
+                            if (!isPaid) return;
                             setModal({
                               state: true,
                               id: id,
                               name: formatUserName(userName),
                               money: moneyFormat,
-                            })
-                          }
+                            });
+                          }}
                         >
                           {isPaid ? '환불하기' : '환불됨'}
                         </Text>

@@ -25,7 +25,7 @@ export const AuthPage: React.FC = () => {
             한움페이 부스운영 시스템
           </Text>
         </S.AuthPageLogoContainer>
-        <S.AuthPageFormGroup>
+        <S.AuthPageFormGroup onSubmit={handleSubmit(onSubmit)}>
           <S.AuthPageFormInput placeholder="부스 키를 입력해주세요" {...register('key')} />
           <S.AuthPageFormLabel>부스 키</S.AuthPageFormLabel>
         </S.AuthPageFormGroup>

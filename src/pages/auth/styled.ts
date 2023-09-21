@@ -40,7 +40,7 @@ export const AuthPageText = styled.p`
   font-weight: 700;
 `;
 
-export const AuthPageFormGroup = styled.div`
+export const AuthPageFormGroup = styled.form`
   position: relative;
   padding: 15px 0 0;
   margin-top: 10px;
