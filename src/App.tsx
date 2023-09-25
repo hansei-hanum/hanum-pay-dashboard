@@ -9,6 +9,8 @@ export const App: React.FC = () => {
   return (
     <Routes>
       <Route path="/" element={key ? <MainPage /> : <AuthPage />} />
+      {/* 404 */}
+      <Route path="*" element={<div>Not Found</div>} />
     </Routes>
   );
 };
