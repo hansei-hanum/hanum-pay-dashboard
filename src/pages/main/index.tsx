@@ -110,7 +110,7 @@ export const MainPage: React.FC = () => {
                     <>
                       <S.MainPageHistoryContent key={id}>
                         <Text size={fontSize} weight={fontWeight}>
-                          {userName}
+                          {formatUserName(userName)}
                         </Text>
                         <Text size={fontSize} weight={fontWeight}>
                           {moneyFormat}원
